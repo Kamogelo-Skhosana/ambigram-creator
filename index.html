@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ambigram Creator</title>
+    <meta name="description" content="Design ambigrams — words that read the same upside down or in a mirror." />
+  </head>
+  <body>
+    <div class="app">
+      <header class="app__header">
+        <div>
+          <h1>Ambigram Creator</h1>
+          <p>Words that read the same upside down. Type, tune each letter pair, export.</p>
+        </div>
+        <button class="btn btn--ghost" id="flip" type="button">Flip preview 180°</button>
+      </header>
+
+      <main class="layout">
+        <section class="panel controls" aria-label="Controls">
+          <div class="row">
+            <label class="field">
+              <span>Reads as</span>
+              <input id="wordA" type="text" value="ambigram" autocomplete="off" spellcheck="false" />
+            </label>
+            <label class="field">
+              <span>Reads as, flipped</span>
+              <input id="wordB" type="text" value="ambigram" autocomplete="off" spellcheck="false" />
+            </label>
+          </div>
+
+          <div class="row">
+            <label class="field">
+              <span>Symmetry</span>
+              <select id="mode">
+                <option value="rotate">Rotational — read it upside down</option>
+                <option value="mirror">Mirror — read it in a mirror</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Style</span>
+              <select id="renderMode">
+                <option value="blend">Blend — both readings overlap</option>
+                <option value="guide">Guide — colour-coded for tracing</option>
+                <option value="solid">Solid — flattened single ink</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Typeface</span>
+            <select id="font">
+              <option value="Georgia, 'Times New Roman', serif">Georgia (serif)</option>
+              <option value="'Palatino Linotype', Palatino, serif">Palatino</option>
+              <option value="'Times New Roman', serif">Times New Roman</option>
+              <option value="Impact, 'Arial Black', sans-serif">Impact</option>
+              <option value="'Arial Black', sans-serif">Arial Black</option>
+              <option value="'Segoe UI', system-ui, sans-serif">Segoe UI</option>
+              <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+              <option value="'Brush Script MT', cursive">Brush Script</option>
+              <option value="'Segoe Script', cursive">Segoe Script</option>
+              <option value="'Courier New', monospace">Courier New</option>
+            </select>
+          </label>
+
+          <div class="row">
+            <label class="field">
+              <span>Weight <em id="weightLabel">700</em></span>
+              <input id="weight" type="range" min="100" max="900" step="100" value="700" />
+            </label>
+            <label class="field">
+              <span>Letter width <em id="cellLabel">100</em></span>
+              <input id="cell" type="range" min="50" max="200" step="2" value="100" />
+            </label>
+            <label class="field">
+              <span>Outline <em id="strokeLabel">0</em></span>
+              <input id="stroke" type="range" min="0" max="12" step="0.5" value="0" />
+            </label>
+          </div>
+
+          <div class="row">
+            <label class="field">
+              <span>Ink</span>
+              <input id="ink" type="color" value="#14140f" />
+            </label>
+            <label class="field">
+              <span>Backdrop</span>
+              <input id="paper" type="color" value="#ffffff" />
+            </label>
+            <label class="field">
+              <span>Flip opacity <em id="opacityLabel">55%</em></span>
+              <input id="opacity" type="range" min="0" max="100" step="5" value="55" />
+            </label>
+          </div>
+
+          <div class="row row--tight">
+            <label class="field field--check">
+              <input id="autoFit" type="checkbox" checked />
+              <span>Auto-fit halves</span>
+            </label>
+            <label class="field field--check">
+              <input id="showAxis" type="checkbox" checked />
+              <span>Show centre axis</span>
+            </label>
+            <label class="field field--check">
+              <input id="transparent" type="checkbox" />
+              <span>Transparent export</span>
+            </label>
+            <button class="btn btn--ghost" id="reset" type="button">Reset tweaks</button>
+          </div>
+
+          <div class="score" id="score" aria-live="polite"></div>
+        </section>
+
+        <section class="panel stage-panel" aria-label="Preview">
+          <div class="stage" id="stage"></div>
+          <div class="stage__actions">
+            <button class="btn" id="exportSvg" type="button">Download SVG</button>
+            <button class="btn" id="exportPng" type="button">Download PNG</button>
+            <label class="field field--inline">
+              <span>PNG scale</span>
+              <select id="pngScale">
+                <option value="1">1×</option>
+                <option value="2" selected>2×</option>
+                <option value="4">4×</option>
+              </select>
+            </label>
+          </div>
+
+          <aside class="ad ad--rail" data-ad="rail" aria-label="Advertisement"></aside>
+        </section>
+      </main>
+
+      <section class="panel pairs-panel" aria-label="Letter pairs">
+        <div class="pairs-panel__head">
+          <h2>Letter pairs</h2>
+          <p>Each card is one glyph that has to read two ways. Edit the letters, or nudge either half until the shape works.</p>
+        </div>
+        <div class="pairs" id="pairs"></div>
+      </section>
+
+      <aside class="ad ad--leaderboard" data-ad="leaderboard" aria-label="Advertisement"></aside>
+
+      <footer class="app__footer">
+        <p>Tip: pairs like <b>n/u</b>, <b>d/p</b>, <b>b/q</b>, <b>m/w</b>, <b>s/s</b>, <b>o/o</b> are naturally symmetric. Awkward pairs usually get solved by stretching one half, or by letting two letters (<b>rn</b>) stand in for one (<b>m</b>).</p>
+      </footer>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

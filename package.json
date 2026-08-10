@@ -1,0 +1,15 @@
+{
+  "name": "ambigram-creator",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Design rotational and mirror ambigrams — words that read the same upside down.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.1.5"
+  }
+}
