@@ -1,4 +1,6 @@
 import './style.css'
+import '@polytheme/themes-classic/flourishes.css'
+import { artworkDefaults } from './theme.js'
 import { mountAds } from './ads.js'
 import { buildSvg, svgToString, svgToPngBlob } from './render.js'
 import { autoFit, lookupPair, wordScore, scoreVerdict } from './pairs.js'
@@ -21,8 +23,8 @@ const state = {
   weight: 700,
   cell: 100,
   stroke: 0,
-  ink: '#14140f',
-  paper: '#ffffff',
+  ink: artworkDefaults.ink,
+  paper: artworkDefaults.paper,
   opacity: 55,
   showAxis: true,
   transparent: false,
@@ -327,6 +329,11 @@ $('#exportPng').addEventListener('click', async () => {
 })
 
 /* ----------------------------------------------------------------- init --- */
+
+// The colour inputs carry their own defaults in the markup; the theme owns the
+// real ones, so push them back into the DOM before anything reads from it.
+$('#ink').value = state.ink
+$('#paper').value = state.paper
 
 buildPairs()
 renderPairs()

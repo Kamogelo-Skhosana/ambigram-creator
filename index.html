@@ -1,5 +1,11 @@
 <!doctype html>
-<html lang="en">
+<!--
+  data-theme is set here rather than left to the engine: the attribute is on the
+  element before the first byte of CSS is parsed, so the page never paints one
+  theme and then swaps. The engine writes the matching custom properties on
+  startup (src/theme.js).
+-->
+<html lang="en" data-theme="retro-y2k">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -77,7 +77,41 @@ What the app does with it:
 - The generated shape is a *starting point*. Real ambigrams are finished by hand —
   export the SVG and redraw the strokes so the two readings share one skeleton.
 
+## Theming
+
+The interface runs on a single [polytheme](https://github.com/Kamogelo-Skhosana/polytheme)
+theme — **Y2K Chrome** (`retro-y2k`). A polytheme theme is a whole design
+contract, not a palette: colour, type, shape and motion arrive together, which is
+why the app has pill controls, a wide geometric masthead and a bouncy easing
+curve rather than just a different accent colour.
+
+The integration is one mapping block at the top of
+[src/style.css](src/style.css), where the app's own variables are pointed at the
+`--pt-*` custom properties the engine writes. Nothing further down that file
+names a colour, a font or a radius, so switching theme is a one-line change in
+[src/theme.js](src/theme.js):
+
+```js
+import { arcade8bit } from '@polytheme/themes-classic'
+export const theme = arcade8bit
+```
+
+`data-theme` is set on `<html>` in [index.html](index.html) so the correct theme
+is on the element before any CSS is parsed — update that too when you switch, or
+the first paint uses the fallbacks in `style.css` until the engine starts.
+
+The ink and backdrop colours the ambigram itself is drawn in default to the
+theme's text and card colours, and stay editable — picking your own ink is the
+point of the app.
+
+> **Local dependency.** `@polytheme/core` and `@polytheme/themes-classic` are
+> installed with `file:../polytheme/...`, so a fresh clone of this repo alone
+> will not install. Either clone `polytheme` as a sibling directory and run
+> `npm run build` in it first, or swap both entries in `package.json` for
+> published versions once the packages are on npm.
+
 ## Stack
 
-Vite + vanilla JS, SVG rendering, no runtime dependencies.
+Vite + vanilla JS, SVG rendering. One runtime dependency: the polytheme engine
+(~5 kB) and its theme pack.
 # ambigram-creator

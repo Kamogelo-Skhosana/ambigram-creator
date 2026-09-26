@@ -1,21 +1,41 @@
+/*
+ * The app is themed by polytheme (see src/theme.js). The engine writes the
+ * `--pt-*` custom properties; everything below reads the app's own names, which
+ * are mapped onto them here.
+ *
+ * That one mapping layer is the whole integration — no rule further down this
+ * file mentions a colour, a font or a radius by name, so changing the theme in
+ * theme.js restyles the entire app.
+ *
+ * The fallbacks are the theme's own values. They only ever apply in the gap
+ * before the engine's module script runs, which keeps the first paint correct
+ * instead of flashing an unstyled page.
+ */
 :root {
-  --page: #f0efea;
-  --surface: #ffffff;
-  --surface-alt: #f7f6f2;
-  --ink: #14140f;
-  --ink-soft: #5c5c53;
-  --rule: #cfcec5;
-  --rule-hard: #14140f;
-  --accent: #b3160f;
-  --accent-dark: #8a0f0a;
-  --accent-ink: #ffffff;
-  --ok: #14713a;
-  --warn: #0a48b4;
-  --error: #b3160f;
-  --radius: 2px;
-  --sans: "Helvetica Neue", Helvetica, Arial, "Segoe UI", sans-serif;
-  --serif: Georgia, "Times New Roman", Times, serif;
-  color-scheme: light;
+  --page: var(--pt-color-bg, #eaf0fa);
+  --surface: var(--pt-color-card-bg, #ffffff);
+  --surface-alt: var(--pt-color-bg-alt, #d7e1f2);
+  --ink: var(--pt-color-text, #141a2e);
+  --ink-soft: var(--pt-color-text-dim, #5a6685);
+  --rule: var(--pt-color-border, #9fb0d4);
+  --accent: var(--pt-color-accent, #7b5cff);
+  --accent-ink: var(--pt-color-accent-text, #ffffff);
+  --ok: var(--pt-color-success, #00c2a8);
+  --warn: var(--pt-color-warning, #ffb000);
+  --error: var(--pt-color-danger, #ff5470);
+
+  /* Controls and chips take the theme's radius; panels take the clamped one,
+     so a pill radius stays on the small things and never lozenges a panel. */
+  --radius: var(--pt-shape-radius, 999px);
+  --radius-panel: var(--pt-shape-radius-large, 28px);
+  --shadow: var(--pt-shape-shadow, 0 8px 20px rgba(31, 45, 90, 0.18));
+  --border-width: var(--pt-shape-border-width, 1px);
+
+  --sans: var(--pt-type-body, "Space Grotesk", Verdana, system-ui, sans-serif);
+  --serif: var(--pt-type-display, "Michroma", "Eurostile", Verdana, sans-serif);
+  --tracking: var(--pt-type-letter-spacing, 0.04em);
+
+  --motion: var(--pt-motion-duration, 260ms) var(--pt-motion-ease, ease);
 }
 
 * {
@@ -29,8 +49,9 @@ body {
   color: var(--ink);
   font-family: var(--sans);
   font-size: 14px;
-  line-height: 1.5;
+  line-height: var(--pt-type-line-height, 1.5);
   -webkit-font-smoothing: antialiased;
+  transition: background-color var(--motion), color var(--motion);
 }
 
 .app {
@@ -46,17 +67,18 @@ body {
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  padding-bottom: 12px;
+  padding-bottom: 14px;
   margin-bottom: 26px;
-  border-bottom: 3px double var(--rule-hard);
+  border-bottom: var(--border-width) solid var(--rule);
 }
 
 .app__header h1 {
   margin: 0;
   font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(26px, 4vw, 36px);
-  letter-spacing: 0.01em;
+  font-weight: var(--pt-type-hero-weight, 400);
+  font-size: clamp(24px, 3.6vw, 34px);
+  letter-spacing: var(--tracking);
+  text-transform: var(--pt-type-heading-transform, none);
 }
 
 .app__header p {
@@ -68,7 +90,7 @@ body {
 .app__footer {
   margin-top: 26px;
   padding-top: 12px;
-  border-top: 1px solid var(--rule);
+  border-top: var(--border-width) solid var(--rule);
   color: var(--ink-soft);
   font-size: 12px;
 }
@@ -76,7 +98,7 @@ body {
 .app__footer b {
   color: var(--ink);
   font-family: var(--serif);
-  font-weight: 700;
+  font-weight: var(--pt-type-hero-weight, 700);
 }
 
 .layout {
@@ -94,9 +116,11 @@ body {
 
 .panel {
   background: var(--surface);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
+  border: var(--border-width) solid var(--rule);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow);
   padding: 18px;
+  transition: background-color var(--motion), border-color var(--motion);
 }
 
 .controls {
@@ -168,10 +192,12 @@ select {
   font-size: 13px;
   color: var(--ink);
   background: var(--surface);
-  border: 1px solid #b8b7ae;
+  border: var(--border-width) solid var(--rule);
   border-radius: var(--radius);
-  padding: 7px 9px;
+  /* Generous side padding so text clears the curve on pill-radius themes. */
+  padding: 7px 14px;
   width: 100%;
+  transition: border-color var(--motion), background-color var(--motion);
 }
 
 select {
@@ -210,7 +236,7 @@ summary:focus-visible {
 .score {
   margin-top: auto;
   padding-top: 13px;
-  border-top: 1px solid var(--rule);
+  border-top: var(--border-width) solid var(--rule);
   font-size: 12px;
   color: var(--ink-soft);
 }
@@ -218,7 +244,8 @@ summary:focus-visible {
 .score__bar {
   height: 8px;
   background: var(--surface-alt);
-  border: 1px solid var(--rule);
+  border: var(--border-width) solid var(--rule);
+  border-radius: var(--radius);
   overflow: hidden;
   margin-bottom: 8px;
 }
@@ -227,6 +254,7 @@ summary:focus-visible {
   display: block;
   height: 100%;
   background: var(--ok);
+  transition: width var(--motion), background-color var(--motion);
 }
 
 .score__text b {
@@ -247,7 +275,8 @@ summary:focus-visible {
 
 .stage {
   background: var(--surface, #ffffff);
-  border: 1px solid var(--rule);
+  border: var(--border-width) solid var(--rule);
+  border-radius: var(--radius-panel);
   padding: 18px;
   display: grid;
   place-items: center;
@@ -278,35 +307,42 @@ summary:focus-visible {
 
 /* buttons */
 .btn {
-  border: 1px solid var(--accent-dark);
+  border: var(--border-width) solid var(--accent);
   background: var(--accent);
   color: var(--accent-ink);
+  /* Body font, not the display face: button labels carry glyphs a display font
+     may not have — "Flip preview 180°" fell back mid-word on Michroma. */
   font: inherit;
   font-size: 13px;
   font-weight: 700;
-  padding: 8px 15px;
+  padding: 8px 18px;
   border-radius: var(--radius);
+  box-shadow: var(--shadow);
   cursor: pointer;
+  transition: filter var(--motion), transform var(--motion);
 }
 
 .btn:hover {
-  background: var(--accent-dark);
+  filter: brightness(1.08);
+  transform: translateY(-1px);
 }
 
 .btn:active {
-  background: var(--accent-dark);
+  filter: brightness(0.95);
+  transform: translateY(0);
 }
 
 .btn--ghost {
   background: var(--surface);
   color: var(--ink);
-  border-color: #b8b7ae;
+  border-color: var(--rule);
   font-weight: 400;
+  box-shadow: none;
 }
 
 .btn--ghost:hover {
   background: var(--surface-alt);
-  border-color: var(--rule-hard);
+  border-color: var(--accent);
 }
 
 /* pairs */
@@ -317,8 +353,10 @@ summary:focus-visible {
 .pairs-panel__head h2 {
   margin: 0;
   font-family: var(--serif);
-  font-weight: 400;
-  font-size: 19px;
+  font-weight: var(--pt-type-hero-weight, 400);
+  font-size: 18px;
+  letter-spacing: var(--tracking);
+  text-transform: var(--pt-type-heading-transform, none);
 }
 
 .pairs-panel__head p {
@@ -335,11 +373,12 @@ summary:focus-visible {
 }
 
 .pair {
-  border: 1px solid var(--rule);
+  border: var(--border-width) solid var(--rule);
   border-left: 4px solid var(--ink-soft);
-  border-radius: var(--radius);
-  padding: 12px;
+  border-radius: var(--radius-panel);
+  padding: 14px 16px;
   background: var(--surface-alt);
+  transition: border-color var(--motion), background-color var(--motion);
 }
 
 .pair--natural { border-left-color: var(--ok); }
@@ -404,14 +443,15 @@ summary:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  border: 1px solid var(--rule);
+  border: var(--border-width) solid var(--rule);
   border-radius: var(--radius);
   background: var(--surface);
   color: var(--ink);
   font-family: var(--serif);
-  font-size: 13px;
-  padding: 2px 7px;
+  font-size: 12px;
+  padding: 3px 10px;
   cursor: pointer;
+  transition: border-color var(--motion), background-color var(--motion);
 }
 
 .chip span {
@@ -420,7 +460,7 @@ summary:focus-visible {
 }
 
 .chip:hover {
-  border-color: var(--rule-hard);
+  border-color: var(--accent);
   background: var(--surface-alt);
 }
 
@@ -441,7 +481,7 @@ summary:focus-visible {
 }
 
 .side {
-  border-top: 1px solid var(--rule);
+  border-top: var(--border-width) solid var(--rule);
   padding-top: 8px;
 }
 
@@ -492,8 +532,8 @@ summary:focus-visible {
 
 .ad {
   display: block;
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
+  border: var(--border-width) solid var(--rule);
+  border-radius: var(--radius-panel);
   background: var(--surface-alt);
   padding: 9px 10px 10px;
 }
@@ -508,7 +548,7 @@ summary:focus-visible {
   display: block;
   padding-bottom: 6px;
   margin-bottom: 10px;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: var(--border-width) solid var(--rule);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -560,8 +600,8 @@ summary:focus-visible {
 
 .ad__house b {
   font-family: var(--serif);
-  font-weight: 400;
-  font-size: 19px;
+  font-weight: var(--pt-type-hero-weight, 400);
+  font-size: 17px;
 }
 
 .ad__line {
