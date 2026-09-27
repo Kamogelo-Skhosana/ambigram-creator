@@ -1,5 +1,5 @@
 import './style.css'
-import '@polytheme/themes-classic/flourishes.css'
+import '@themeloom/themes-classic/flourishes.css'
 import { artworkDefaults } from './theme.js'
 import { mountAds } from './ads.js'
 import { buildSvg, svgToString, svgToPngBlob } from './render.js'

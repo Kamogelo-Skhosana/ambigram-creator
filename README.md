@@ -79,8 +79,8 @@ What the app does with it:
 
 ## Theming
 
-The interface runs on a single [polytheme](https://github.com/Kamogelo-Skhosana/polytheme)
-theme — **Y2K Chrome** (`retro-y2k`). A polytheme theme is a whole design
+The interface runs on a single [themeloom](https://github.com/Kamogelo-Skhosana/themeloom)
+theme — **Y2K Chrome** (`retro-y2k`). A themeloom theme is a whole design
 contract, not a palette: colour, type, shape and motion arrive together, which is
 why the app has pill controls, a wide geometric masthead and a bouncy easing
 curve rather than just a different accent colour.
@@ -92,7 +92,7 @@ names a colour, a font or a radius, so switching theme is a one-line change in
 [src/theme.js](src/theme.js):
 
 ```js
-import { arcade8bit } from '@polytheme/themes-classic'
+import { arcade8bit } from '@themeloom/themes-classic'
 export const theme = arcade8bit
 ```
 
@@ -104,14 +104,14 @@ The ink and backdrop colours the ambigram itself is drawn in default to the
 theme's text and card colours, and stay editable — picking your own ink is the
 point of the app.
 
-> **Local dependency.** `@polytheme/core` and `@polytheme/themes-classic` are
-> installed with `file:../polytheme/...`, so a fresh clone of this repo alone
-> will not install. Either clone `polytheme` as a sibling directory and run
+> **Local dependency.** `@themeloom/core` and `@themeloom/themes-classic` are
+> installed with `file:../themeloom/...`, so a fresh clone of this repo alone
+> will not install. Either clone `themeloom` as a sibling directory and run
 > `npm run build` in it first, or swap both entries in `package.json` for
 > published versions once the packages are on npm.
 
 ## Stack
 
-Vite + vanilla JS, SVG rendering. One runtime dependency: the polytheme engine
+Vite + vanilla JS, SVG rendering. One runtime dependency: the themeloom engine
 (~5 kB) and its theme pack.
 # ambigram-creator
