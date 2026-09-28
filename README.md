@@ -80,7 +80,7 @@ What the app does with it:
 ## Theming
 
 The interface runs on a single [themeloom](https://github.com/Kamogelo-Skhosana/themeloom)
-theme — **Y2K Chrome** (`retro-y2k`). A themeloom theme is a whole design
+theme — **Retro / Y2K** (`retro-y2k`). A themeloom theme is a whole design
 contract, not a palette: colour, type, shape and motion arrive together, which is
 why the app has pill controls, a wide geometric masthead and a bouncy easing
 curve rather than just a different accent colour.
@@ -92,8 +92,8 @@ names a colour, a font or a radius, so switching theme is a one-line change in
 [src/theme.js](src/theme.js):
 
 ```js
-import { arcade8bit } from '@themeloom/themes-classic'
-export const theme = arcade8bit
+import { terminal } from '@themeloom/themes-classic'
+export const theme = terminal
 ```
 
 `data-theme` is set on `<html>` in [index.html](index.html) so the correct theme
